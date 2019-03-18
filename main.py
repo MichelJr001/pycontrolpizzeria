@@ -12,11 +12,47 @@ import os
 con = sqlite3.connect('databases/main.db')
 c = con.cursor()
 
-def func_msg(op):
-    if op == 'falid':
-        os.system('start notifications/falid.py')
-    else:
-        os.system('start notifications/success.py')
+class falid():
+    def __init__(self, initjanela, msg):
+        def fechar():
+            self.janela.destroy()
+            if initjanela == 'autenticar':
+                autenticar()
+            elif initjanela == 'pizzaria':
+                pizzaria()
+            elif initjanela == 'cadastro':
+                cadastro()
+        self.janela = Tk()
+        self.janela.title('Erro')
+        self.janela.iconbitmap('icons/erro.ico')
+        self.janela.resizable(width=False, height=False)
+        self.fotoerro = PhotoImage(file='icons/erro.png')        
+        self.label = Label(self.janela, image=self.fotoerro).grid(row=0, column=1, pady=10)
+        self.lbl = Label(self.janela, text=msg, fg='red').grid(row=1, column=1, pady=10)
+        self.btn = Button(self.janela, command=fechar, text='Concluir').grid(row=2, column=1, pady=10)
+        self.janela.mainloop()
+
+class success():
+    def __init__(self, initjanela, msg):
+        def fechar():
+            self.janela.destroy()
+            if initjanela == 'autenticar':
+                autenticar()
+            elif initjanela == 'pizzaria':
+                pizzaria()
+            elif initjanela == 'cadastro':
+                cadastro()
+        self.janela = Tk()
+        self.janela.title('Sucesso')
+        self.janela.iconbitmap('icons/sucesso.ico')
+        self.janela.resizable(width=False, height=False)
+        self.fotosucesso = PhotoImage(file='icons/sucesso.png')        
+        self.label = Label(self.janela, image=self.fotosucesso).grid(row=0, column=1, pady=10)
+        self.lbl = Label(self.janela, text=msg, fg='green').grid(row=1, column=1, pady=10)
+        self.btn = Button(self.janela, command=fechar, text='Concluir').grid(row=2, column=1, pady=10)
+        self.janela.mainloop()
+
+        
 class pizzaria():
     def __init__(self):
         def func_cadastro():
@@ -49,11 +85,14 @@ class cadastro():
                 try:
                     c.execute("INSERT INTO clientes ('nome', 'telefone', 'endereço', 'cpf') VALUES ('{}', '{}', '{}', '{}')".format(str(self.nome.get()), str(self.telefone.get()), str(self.endereco.get()), str(self.cpf.get())))
                     con.commit()
-                    func_msg('success')
+                    self.janelac.destroy()
+                    success('cadastro', 'Usuario cadastrado com sucesso na base de dados!')
                 except:
-                    func_msg('falid')
+                    self.janelac.destroy()
+                    falid('cadastro', 'CPF já cadastro da base de dados!')
             else:
-                func_msg('falid')
+                self.janelac.destroy()
+                falid('cadastro', 'Preencha todos os campos!')
 
         # Configurações da janela
         self.janelac = Tk()
@@ -93,44 +132,46 @@ class cadastro():
         self.janelac.mainloop()
         
 class autenticar():
-    def __init__(self, login):
+    def __init__(self):
         def auth():
             # Verifica se os campos estão vazios
-            if (str(nome.get()) and str(senha.get()) != None):
-                c.execute('SELECT * FROM usuarios  WHERE nome = "{}" AND senha = "{}" LIMIT 1'.format(str(nome.get()), str(senha.get())))
+            if (str(self.nome.get()) and str(self.senha.get()) != None):
+                c.execute('SELECT * FROM usuarios  WHERE nome = "{}" AND senha = "{}" LIMIT 1'.format(str(self.nome.get()), str(self.senha.get())))
                 con.commit()
                 resultado = c.fetchall()
                 # Se a consulta teve resutado:
                 if resultado:
-                    login.destroy()
+                    self.login.destroy()
                     pizzaria()
                     # Senão
                 else:
-                    func_msg('falid')
+                    self.login.destroy()
+                    falid('autenticar', 'Usuario não encontrado na base de dados!')
             else:
                 pass
+
+        self.login = Tk()
+        self.login.title('Autenticação')
+        self.login.iconbitmap('icons/pizza.ico')
+        self.img_login = PhotoImage(file='icons/login.png')
+        self.login.geometry('230x250')
+        self.login.resizable(width=False, height=False)
+
         # Menu de login   
-        label = Label(login, image=img_login).grid(row=0, column=1, pady=10)
+        self.label = Label(self.login, image=self.img_login).grid(row=0, column=1, pady=10)
         # campo nome
-        nome = StringVar()
-        lbl_nome = Label(login, text='Usuario:').grid(row=1, column=0, padx=10)
-        input_nome = Entry(login, textvariable=nome).grid(row=1, column=1)
+        self.nome = StringVar()
+        self.lbl_nome = Label(self.login, text='Usuario:').grid(row=1, column=0, padx=10)
+        self.input_nome = Entry(self.login, textvariable=self.nome).grid(row=1, column=1)
 
         # campo senha
-        senha = StringVar()
-        lbl_nome = Label(login, text='Senha:').grid(row=2, column=0, padx=10)
-        input_nome = Entry(login, textvariable=senha, show='*').grid(row=2, column=1, pady=5)
+        self.senha = StringVar()
+        self.lbl_nome = Label(self.login, text='Senha:').grid(row=2, column=0, padx=10)
+        self.input_nome = Entry(self.login, textvariable=self.senha, show='*').grid(row=2, column=1, pady=5)
 
 
         # Botao para cadastrar
-        btn_cadastrar = Button(login, text='Logar', command=auth).grid(row=3, column=1, pady=20, ipadx=20)
+        self.btn_cadastrar = Button(self.login, text='Logar', command=auth).grid(row=3, column=1, pady=20, ipadx=20)
         
-login = Tk()
-login.title('Autenticação')
-login.iconbitmap('icons/pizza.ico')
-img_login = PhotoImage(file='icons/login.png')
-login.geometry('230x250')
-login.resizable(width=False, height=False)
-autenticar(login)
-login.mainloop()
 
+autenticar()

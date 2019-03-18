@@ -16,3 +16,6 @@ CREATE TABLE 'clientes' (
 	'endereço' TEXT,
 	'cpf' INT(11) UNIQUE
 );
+
+/* LOGIN PADRÃO DO SISTEMA */
+INSERT INTO usuarios ('nome', 'senha') VALUES ('saloadmin', 'admin');
