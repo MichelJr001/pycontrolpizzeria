@@ -1,0 +1,24 @@
+{
+	"placa"{
+		1: "https://www.justica.gov.br/sua-seguranca/seguranca-publica/sinesp-1/sinesp-Cidadao",
+		2: "http://detran.pb.gov.br/portalparaiba/portal_detranpb/veiculo/consulta-do-veiculo",
+		3: "https://portaldacidadania.pb.gov.br/Mobilidade/Detran/Veiculo/ConsultarVeiculo",
+		4: "http://www.detran.df.gov.br/consulta-sng-html/"
+	},
+	"chassi"{
+		1: "http://www2.detran.rn.gov.br/externo/ConsultaSNG.asp"
+	}
+	"placa/chassi"{
+		1: "https://centraldeservicos.cnseg.org.br/ConsultaDetranDF/"
+	}
+	"placa/renavam"{
+		1: "http://www2.detran.rn.gov.br/externo/consultarveiculo.asp?MENSAGEM=1"
+		2: "http://www.detran.ms.gov.br/consulta-de-debitos/"
+	}
+	
+}
+
+
+
+
+
